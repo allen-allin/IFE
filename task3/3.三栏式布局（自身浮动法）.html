@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	/*html,body {
+		height: 100%;
+	}*/
+	div {
+		border: 1px solid black;
+		padding: 20px;
+	}
+	#container {
+		background: #eee;
+		min-height: 440px;
+	}
+	#left {
+		float: left;
+		width: 200px;
+		background: white;
+		padding: 0;
+	}
+	#right {
+		float: right;
+		width: 120px;
+		background: white;
+		padding: 0;
+	}
+	#middle {
+		margin-left: 240px;
+		margin-right: 160px;
+		background: white;
+	}
+	.box1 {
+		height: 80px;
+		width: 80px;
+		background: #eee;
+		margin: 20px;
+		padding: 0;
+	}
+	.box2 {
+		height: 80px;
+		width: 80px;
+		background: #eee;
+		padding: 0;
+		margin: 20px;
+	}
+	#left div {
+		float: left;
+	}
+	#team-name  {	
+		padding: 0;
+		margin: 20px 0 0 0 ;
+		border: 0;
+	}
+</style>
+</head>
+<body>
+	<div id="container">
+		<div id="left">
+			<div class="box2"></div>
+			<div id="team-name"><span>   团队名称</span></div>
+		</div>
+
+		<div id="right">
+			<div class="box1"></div>
+			<div class="box1"></div>
+			<div class="box1"></div>
+			<div class="box1"></div>
+		</div>
+		<div id="middle">
+			<p>重点：<br>
+			1. 两边宽度固定，中间自适应宽度<br>
+			    宽度自适应的方法有三种：绝对定位法、margin负值法、自身浮动法，这里用的是第三种<br>
+			    (1)绝对定位法：左右两栏采用绝对定位，分别固定于页面的左右两侧，中间的主体栏用左右margin值撑开距离,即主体div的左右margin分别等于左右两栏的宽度加间隙。<br>
+			    (2)margin负值法：注意三个div的顺序，主体div放最前面。首先，中间的主体要使用双层标签。外层div宽度100%显示，并且浮动，内层div为真正的主体内容，左右margin分别等于左右两栏的宽度加间隙。左栏与右栏都是采用margin负值定位的，左栏左浮动，margin-left为-100%，由于前面的div宽度100%与浏览器，所以这里的-100%margin值正好使左栏div定位到了页面的左侧；右侧栏也是左浮动，其margin-left也是负值，大小为其本身的宽度<br>
+			    (3)自身浮动法：注意三个div的顺序，主体div放最后面。左栏左浮动，右栏右浮动，主体div的左右margin分别等于左右两栏的宽度加间隙.<br>
+			2.父元素的高度始终等于最高的子元素的高度<br>
+				用min-height
+            </p>
+		</div>	
+	</div>
+</body>
+</html>
