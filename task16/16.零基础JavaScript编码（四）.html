@@ -1,0 +1,91 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+ 
+  </head>
+<body>
+
+  <div>
+    <label>城市名称：<input id="aqi-city-input" type="text"></label><br>
+    <label>空气质量指数：<input id="aqi-value-input" type="text"></label><br>
+    <button id="add-btn">确认添加</button>
+  </div>
+  <table id="aqi-table">
+ <!-- 
+    <tr>
+      <td>城市</td><td>空气质量</td><td>操作</td>
+    </tr>
+    <tr>
+      <td>北京</td><td>90</td><td><button>删除</button></td>
+    </tr>
+    <tr>
+      <td>北京</td><td>90</td><td><button>删除</button></td>
+    </tr> -->
+   
+  </table>
+<script>
+  var ipt1=document.getElementById('aqi-city-input');
+  var ipt2=document.getElementById('aqi-value-input');
+  var oBtn=document.getElementById('add-btn');
+  var oTab=document.getElementById('aqi-table');
+  var aqiData = {};
+
+oBtn.onclick=function () {
+
+  //去除多余空格
+  var city=ipt1.value.trim();
+  var aqi=ipt2.value.trim();
+
+  //正则
+  if (!city.match(/^[A-Za-z\u4E00-\u9FA5]+$/)) {
+    alert('城市必须是英文或者中文!');
+    //if 语句结束后会返回判断语句中的变量（这里是city），为了不让不符合条件的返回，所以要return空
+    return ;
+  }
+  if (!aqi.match(/^[1-9]\d*$/)) {
+    alert('空气质量指数必须是整数！');
+    return ;
+  }
+
+  //将aqi和city加到json中
+  aqiData[city]=aqi;
+
+  //如果表格没有子节点（即第一次添加），则先添加一个表头
+  if (oTab.children.length==0) {
+    oTab.innerHTML='<tr><td>城市</td><td>空气质量</td><td>操作</td></tr>'
+  }
+
+  //在表格中添加行
+    var oTr=document.createElement('tr');
+    oTab.appendChild(oTr);
+
+  //在行中添加列
+    var oTd=document.createElement('td');
+    oTd.innerHTML=city;
+    ipt1.value='';    //添加后再令输入框为空
+    oTr.appendChild(oTd);
+
+    var oTd=document.createElement('td');
+    oTd.innerHTML=aqi;   //  也可以写成 oTd.innerHTML=aqiData[city]
+    ipt2.value='';
+    oTr.appendChild(oTd);
+
+   //添加删除按钮 
+    var oTd=document.createElement('td');
+    oTd.innerHTML='<button>删除</button>';
+    oTr.appendChild(oTd);
+
+    var aBtn=oTab.getElementsByTagName('button');
+    for (var i = 0; i < aBtn.length; i++) {
+      aBtn[i].onclick=function () {
+       oTab.removeChild(this.parentNode.parentNode)     //button的父元素是td，td的父元素是tr
+      };
+    }
+}
+
+</script>
+</body>
+
+</html>
