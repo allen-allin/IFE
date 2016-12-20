@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	.box {
+		background: red;
+		width: 40px;
+		height: 40px;
+		float: left;
+		margin: 5px;
+		text-align: center;
+		line-height: 40px;
+	}
+	
+</style>
+</head>
+<body>
+	<div id="div1">
+		<input type="text">
+		<button>左侧入</button>
+		<button>右侧入</button>
+		<button>左侧出</button>
+		<button>右侧出</button>
+	</div>	
+	<div id="div2">
+		<div class="box">10</div>
+		<div class="box">3</div>
+		<div class="box">7</div>
+		<div class="box">12</div>
+		<div class="box">11</div>
+		<div class="box">30</div>
+	</div>
+<script>
+	window.onload=function () {
+		var oIpt=document.getElementsByTagName('input')[0];
+		var oDiv=document.getElementById('div2');
+		var aDiv=oDiv.getElementsByTagName('div');
+		var leftIn=document.getElementsByTagName('button')[0];
+		var rightIn=document.getElementsByTagName('button')[1];
+		var leftOut=document.getElementsByTagName('button')[2];
+		var rightOut=document.getElementsByTagName('button')[3];
+		var newDiv=document.createElement('div');
+
+		//增加div的函数
+		function add() {
+			if (!oIpt.value.match(/^[1-9]\d*$/)) {
+				alert('输入内容必须是整数！');
+				oIpt.value='';
+				return ;
+			}
+			newDiv.className='box';
+			newDiv.innerHTML=oIpt.value;
+			oIpt.value='';
+
+			//给每个新的div加一个删除事件
+			newDiv.onclick=function () {
+				oDiv.removeChild(this);
+			}
+		}
+		
+		//点击按钮从右边插入DIV，div内显示输入框的内容
+		rightIn.onclick=function () {
+			add();
+			oDiv.appendChild(newDiv);
+			
+		}
+
+		//点击按钮从左边插入DIV，div内显示输入框的内容
+		leftIn.onclick=function () {
+			add();
+			oDiv.insertBefore(newDiv,oDiv.firstChild);			
+		}
+
+		//点击按钮删除最右边的div
+		rightOut.onclick=function () {
+			alert(aDiv[aDiv.length-1].innerHTML);
+			oDiv.removeChild(aDiv[aDiv.length-1]);
+		}
+
+
+		//点击按钮删除最左边的div
+		leftOut.onclick=function () {
+			alert(aDiv[0].innerHTML);
+			oDiv.removeChild(aDiv[0]);
+		}
+
+		//所有的div：点击一下就删除该div
+		for (var i = 0; i < aDiv.length; i++) {
+			aDiv[i].onclick=function () {
+				oDiv.removeChild(this)
+			}
+		}
+		
+	}
+</script>
+</body>
+</html>
