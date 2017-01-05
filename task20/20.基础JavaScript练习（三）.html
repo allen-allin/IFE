@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	.box {
+		background: red;
+		min-width: 40px;
+		height: 40px;
+		float: left;
+		margin: 5px;
+		text-align: center;
+		line-height: 40px;
+	}
+	
+</style>
+</head>
+<body>
+	<div id="div1">
+		<textarea id="ipt" cols="25" rows="3" placeholder="请输入内容，用不同的间隔符号隔开"></textarea>
+		<button id="add">添加</button>
+		<button id="search">搜索</button>
+		<input id="searchIpt"></input>
+		<!-- <button>右侧入</button>
+		<button>左侧出</button>
+		<button>右侧出</button> -->
+	</div>	
+	<div id="div2">
+	</div>
+<script>
+	window.onload=function () {
+
+/*	$ = function(el) {
+        return document.querySelector(el);
+    }
+
+    var arrData = [];	
+    $('#insert').onclick = function() {
+        var str = $('#textArea').value.trim();
+        var arrWord = str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function(e) {
+            if (e != null && e.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        arrData = arrData.concat(arrWord);
+
+        render();
+    }
+
+    $('#search').onclick = function() {
+        var str = $('#searchInput').value.trim();
+        render(str);
+    }
+
+    function render(str) {
+        $('#result').innerHTML = arrData.map(function(d) {
+            if (str != null && str.length > 0) {
+                d = d.replace(new RegExp(str, "g"), "<span class='select'>" + str + "</span>");
+            }
+            return '<div>' + d + '</div>';
+        }).join('');
+    }*/
+
+
+	$=function (el) {
+		return document.querySelector(el)
+	}
+		
+	function add() {
+		var str=$('#ipt').value.trim();
+		var arrWord=str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function (i) {
+			if (str.length>0) {return true;}
+		});
+		
+		for (var i = 0; i < arrWord.length; i++) {
+			var newDiv=document.createElement('div');
+			newDiv.innerHTML=arrWord[i];
+			newDiv.className='box';
+			$('#div2').appendChild(newDiv);		
+			newDiv.onclick=function () {
+				$('#div2').removeChild(this);
+			}
+		}
+		$('#ipt').value='';
+	}
+	
+	function find() {
+		if ($('#div2').firstChild) {
+			var oDiv=$('#div2').getElementsByTagName('div');
+			for (var i = 0; i < oDiv.length; i++) {
+				oDiv[i].style.background='red';
+				var sTxt=$('#searchIpt').value;
+				var sDiv=oDiv[i].innerHTML;
+				var arr=sDiv.split('');
+				for (var j = 0; j < arr.length; j++) {
+					if (arr[j].search(sTxt)!=-1) {
+						oDiv[i].style.background='yellow';		
+					}
+				}
+			}
+		}
+		$('#searchIpt').value='';
+	}
+	$('#add').onclick=add;	
+	$('#search').onclick=find;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style type="text/css">
+	#tagShow1,#hobbyShow {margin: 20px;}
+	.box {
+		background: skyblue;
+		min-width: 40px;
+		height: 40px;
+		float: left;
+		margin: 5px;
+		text-align: center;
+		line-height: 40px;
+	}
+	#tagShow1{min-height: 40px;}
+
+	#tagShow1 div:hover {
+	background-color: red;
+	cursor: pointer;
+	}
+	#tagShow1 div:hover:before {
+		content: "删除";
+	}
+	#hobbyShow div:hover {
+	background-color: red;
+	cursor: pointer;
+	}
+	#hobbyShow div:hover:before {
+		content: "删除";
+	}
+</style>
+</head>
+<body>
+	Tag:<input id="tagIpt1"></input> 
+	<div id="tagShow1"></div>
+	<br>
+	<textarea id="hobby" rows="5" cols="25"></textarea> <br>
+	<button id="makesure">确认兴趣爱好</button>
+	<div id="hobbyShow"></div>
+<script type="text/javascript">
+	var oIpt1=document.getElementById('tagIpt1');
+	var oBtn=document.getElementById('makesure');
+	var oTxt=document.getElementById('hobby');
+	var oDiv1=document.getElementById('tagShow1');
+	var oDiv2=document.getElementById('hobbyShow');
+
+
+	function GetList(divContainer) {
+		this.queue=[];
+		this.paint=function () {
+			var str='';
+			for (var i = 0; i < this.queue.length; i++) {
+				str+='<div class="box">'+this.queue[i]+'</div>';
+			}
+			divContainer.innerHTML=str;
+			addDivEvent(divContainer,this)
+		}
+	}
+
+	GetList.prototype.del=function (n) {
+		this.queue.splice(n,1);
+		this.paint();
+	}
+	GetList.prototype.push=function (str) {
+		this.queue.push(str);
+	}
+	GetList.prototype.shift=function (str) {
+		this.queue.shift();
+	}
+	function addDivEvent(divContainer,list) {
+		var aDiv=divContainer.getElementsByTagName('div');
+			for (var i = 0; i < aDiv.length; i++) {
+				aDiv[i].onclick=function(x){
+					return function () {
+					  list.del(x)
+					}
+				}(i)
+			}
+	}
+	var list=new GetList(oDiv1);
+	var hobbyList=new GetList(oDiv2);
+
+	oIpt1.onkeyup=function (ev) {
+		var oEvent=ev||event;
+		var str=this.value;
+		//按下回车空格或者逗号
+		if (/(,| |\，)$/.test(str)||oEvent.keyCode===13) {
+
+			var newTag=str.match(/(^[^,\， ]*)/)[0];
+			//去重，且不是空
+			if (list.queue.indexOf(newTag)==-1&&newTag!='') {
+				list.push(newTag);
+				//大于10个，从前面开始删除
+				if (list.queue.length>10) {
+					list.queue.shift();
+				}
+				//渲染
+				list.paint();
+			}
+			this.value='';
+		}
+	}	
+
+	oBtn.onclick=function () {
+		var arr=oTxt.value.split(/,|，|`|、| |　|\t|\r|\n/).filter(function (item) {
+						  	return item	//确认输入的不为空
+						  }).forEach(function (item) {
+						  	if (hobbyList.queue.indexOf(item)==-1) {
+						  		hobbyList.queue.push(item);
+						  		if (hobbyList.queue.length>10) {
+						  			hobbyList.queue.shift();
+						  		}
+						  	}
+						  })
+		oTxt.value='';
+		hobbyList.paint();
+	}
+
+
+	/*function add(input,parent,cls) {
+		var str=input.value.trim();
+		var arrWord=str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function (i) {
+			if (str.length>0) {return true;}
+		});
+		// var arr=oSort(arrWord);
+		for (var i = 0; i < arrWord.length; i++) {
+			var newDiv=document.createElement('div');
+			newDiv.innerHTML=arrWord[i];
+			var text=newDiv.innerHTML;
+			newDiv.className=cls;
+			newDiv.onmouseover=function () {
+				this.style.background='red';
+				this.innerHTML='删除'+text;
+			}
+			newDiv.onmouseout=function () {
+				this.style.background='skyblue';
+				this.innerHTML=text;
+			}		
+			newDiv.onclick=function () {
+				parent.removeChild(this);
+			}
+			
+			parent.appendChild(newDiv);
+			// parent.innerHTML=inner;
+			// var text='';
+
+		}
+		input.value='';
+		
+	}
+	
+	function oSort(arr) {
+	    var result=[];
+	    for (var i = 0; i < arr.length; i++) {
+	      if (result.indexOf(arr[i])==-1) {
+	        result.push(arr[i])
+	      }
+	    }
+	    return result
+  	}
+	oIpt1.onkeydown=function (ev) {
+		var oEvent=ev||event;
+		
+		if (oEvent.keyCode==188||oEvent.keyCode==13||oEvent.keyCode==32) {
+			add(oIpt1,oDiv1,'box');
+		
+		}
+		
+	}*/
+</script>
+</body>
+</html>
