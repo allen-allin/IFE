@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	#tree,#tree div {
+		display: flex;
+		border: 2px black solid;
+		margin: 36px 20px;
+		flex-grow: 1;
+	}
+	#tree {
+		width: 80%;
+		height: 300px;
+		margin: 50px auto;
+	}
+
+	#selector{
+		position: absolute;
+		left: 50%;
+		margin-left: -52px;
+		top: 0;
+	}
+	.box {
+		background: pink;
+	}
+</style>
+</head>
+<body>
+
+	<div id="selector">模式：
+		<button>前</button>
+		<button>中</button>
+		<button>后</button>
+	</div>
+
+	<div id="tree">
+		<div>
+			<div>
+				<div></div>
+				<div></div>
+			</div>
+			<div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<div>
+			<div>
+				<div></div>
+				<div></div>
+			</div>
+			<div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</div>
+<script>
+window.onload=function () {
+	var oBtn=document.getElementsByTagName('button'),
+	    prevBtn=oBtn[0],
+	    inBtn=oBtn[1],
+	    postBtn=oBtn[2];
+	var timer;
+	var divList=[];
+	var speed=300;
+	var oDiv=document.getElementById('tree');
+	var aDiv=oDiv.getElementsByTagName('div');
+
+
+	//颜色变化
+	function changeColor() {
+		var i=0;
+		divList[i].className='box';
+		timer=setInterval(function () {
+			i++;
+			if (i<divList.length) {
+				divList[i-1].className='';
+				divList[i].className='box';
+			}else {
+				clearInterval(timer);
+				divList[divList.length-1].className='';			
+			}
+		},speed)
+	}
+
+	//重置，初始化
+	function reset() {
+		divList=[];
+		clearInterval(timer);
+		for (var i = 0; i < aDiv.length; i++) {
+			aDiv[i].className='';
+		}
+	}
+
+	//前序
+	function prevOrder(node) {
+		if (node) {
+			divList.push(node);
+			prevOrder(node.children[0]);
+			prevOrder(node.children[1]);
+		}
+	}
+	//中序
+	function inOrder(node) {
+		if (node) {
+			inOrder(node.children[0]);			
+			divList.push(node);
+			inOrder(node.children[1]);
+		}
+	}
+	//后序
+	function postOrder(node) {
+		if (node) {
+			postOrder(node.children[0]);			
+			postOrder(node.children[1]);
+			divList.push(node);			
+		}
+	}
+	prevBtn.onclick=function () {
+		reset();
+		prevOrder(tree);
+		changeColor();
+	}
+	inBtn.onclick=function () {
+		reset();
+		inOrder(tree);
+		changeColor();
+	}
+	postBtn.onclick=function () {
+		reset();
+		postOrder(tree);
+		changeColor();
+	}
+
+}
+
+	 
+</script>
+</body>
+</html>
